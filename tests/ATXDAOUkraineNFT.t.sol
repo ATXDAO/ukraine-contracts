@@ -52,9 +52,28 @@ contract ATXDAOUkraineNFTTest is DSTest {
 
         nft.mint{value: 8 ether}();
         assertEq(nft.tokenURI(3), "ipfs://uri/2.json");
+
+        assertEq(to.balance, 8.5632 ether);
+
+        (
+            address[] memory owners,
+            uint256[] memory ownerTiers,
+            uint256[] memory values
+        ) = nft.getOwners();
+        assertEq(owners.length, 3);
+        for (uint256 i = 0; i < owners.length; ++i) {
+            assertEq(owners[i], user);
+            assertEq(ownerTiers[i], i);
+        }
+        assertEq(values[2], 8 ether);
     }
 
-    function testGetTier() public view {
-        nft.getTier(0.0512 ether);
+    function testGetTier() public {
+        vm.expectRevert("value smaller than lowest tier!");
+        nft.getTier(0.01 ether);
+        assertEq(nft.getTier(0.0512 ether), 0);
+        assertEq(nft.getTier(0.512 ether), 1);
+        assertEq(nft.getTier(5.12 ether), 2);
+        assertEq(nft.getTier(512 ether), 2);
     }
 }
