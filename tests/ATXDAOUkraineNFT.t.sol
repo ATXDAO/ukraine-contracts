@@ -12,30 +12,49 @@ contract ATXDAOUkraineNFTTest is DSTest {
     address user = address(0x1);
     address to = address(0x2);
 
-    // 1 price tier
-    uint256[] tiers1 = new uint256[](1);
-    ATXDAOUkraineNFT nft1;
-
     // 3 price tiers
-    uint256[] tiers3 = new uint256[](3);
-    ATXDAOUkraineNFT nft3;
+    uint256[] tiers = new uint256[](3);
+    ATXDAOUkraineNFT nft;
 
     function setUp() public {
-        tiers1[0] = .512 ether;
-        nft1 = new ATXDAOUkraineNFT(tiers1, to);
-        nft1.startMint("ipfs://uri/");
+        tiers[0] = .0512 ether;
+        tiers[1] = .512 ether;
+        tiers[2] = 5.12 ether;
+        nft = new ATXDAOUkraineNFT(tiers, to);
+        nft.startMint("ipfs://uri/");
+    }
 
-        tiers3[0] = .0512 ether;
-        tiers3[1] = .512 ether;
-        tiers3[2] = 5.12 ether;
-        nft3 = new ATXDAOUkraineNFT(tiers3, to);
-        nft1.startMint("ipfs://uri/");
+    function testSetTiers() public {
+        uint256[] memory emptyTiers;
+        vm.expectRevert("must be at least 1 price tier");
+        nft.setTiers(emptyTiers);
+
+        uint256[] memory descTiers = new uint256[](2);
+        descTiers[0] = 2;
+        descTiers[1] = 1;
+        vm.expectRevert("price tiers not ascending!");
+        nft.setTiers(descTiers);
     }
 
     function testMintBasic() public {
-        nft1.startMint("ipfs://uri/");
-        vm.deal(user, 1 ether);
-        vm.prank(user);
-        nft1.mint{value: .512 ether}();
+        nft.startMint("ipfs://uri/");
+        vm.deal(user, 10 ether);
+        vm.startPrank(user);
+
+        vm.expectRevert("value smaller than lowest tier!");
+        nft.mint{value: .01 ether}();
+
+        nft.mint{value: .0512 ether}();
+        assertEq(nft.tokenURI(1), "ipfs://uri/0.json");
+
+        nft.mint{value: .512 ether}();
+        assertEq(nft.tokenURI(2), "ipfs://uri/1.json");
+
+        nft.mint{value: 8 ether}();
+        assertEq(nft.tokenURI(3), "ipfs://uri/2.json");
+    }
+
+    function testGetTier() public view {
+        nft.getTier(0.0512 ether);
     }
 }
