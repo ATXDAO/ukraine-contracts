@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "lib": [
+      "ES2020"
+    ],
+    "rootDir": "."
+  },
+  "include": [
+    "./deploy/**/*.ts",
+    "./scripts/**/*.ts",
+    "./util/**/*.ts",
+    "./types/**/*.ts",
+  ],
+  "files": [
+    "./hardhat.config.ts",
+  ]
+}
