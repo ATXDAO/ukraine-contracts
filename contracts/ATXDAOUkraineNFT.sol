@@ -67,10 +67,7 @@ contract ATXDAOUkraineNFT is ERC721URIStorage, Ownable {
 
     // Normal mint
     function mint() external payable {
-        require(
-            isMintable == true,
-            "ATX DAO Ukraine NFT is not mintable at the moment!"
-        );
+        require(isMintable == true, "minting not started!");
         // returns a tier or throws an error if value too small
         uint256 tier = getTier(msg.value);
 

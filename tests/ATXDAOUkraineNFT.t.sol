@@ -68,6 +68,12 @@ contract ATXDAOUkraineNFTTest is DSTest {
         assertEq(values[2], 8 ether);
     }
 
+    function testEndMint() public {
+        nft.endMint();
+        vm.expectRevert("minting not started!");
+        nft.mint{value: .512 ether}();
+    }
+
     function testGetTier() public {
         vm.expectRevert("value smaller than lowest tier!");
         nft.getTier(0.01 ether);
