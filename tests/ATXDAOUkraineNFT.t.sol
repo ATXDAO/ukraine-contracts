@@ -56,6 +56,7 @@ contract ATXDAOUkraineNFTTest is DSTest {
         assertEq(nft.tokenURI(3), "ipfs://uri/2.json");
 
         assertEq(mainRecip.balance, 8.5632 ether);
+        assertEq(mainRecip.balance, nft.totalDonated(mainRecip));
         assertEq(address(nft).balance, 0);
 
         (
@@ -103,6 +104,9 @@ contract ATXDAOUkraineNFTTest is DSTest {
     }
 
     function testAltRecips() public {
+        vm.expectRevert("invalid recipient!");
+        nft.totalDonated(altRecip);
+
         vm.prank(user);
         vm.expectRevert("recipient not whitelisted!");
         nft.mint{value: .0512 ether}(altRecip);
@@ -111,5 +115,6 @@ contract ATXDAOUkraineNFTTest is DSTest {
         vm.prank(user);
         nft.mint{value: .0512 ether}(altRecip);
         assertEq(altRecip.balance, .0512 ether);
+        assertEq(altRecip.balance, nft.totalDonated(altRecip));
     }
 }

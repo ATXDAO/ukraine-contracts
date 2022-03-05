@@ -32,7 +32,12 @@ contract ATXDAOUkraineNFT is ERC721URIStorage, Ownable {
 
     mapping(address => uint256) public recips;
 
-    event UkraineNFTMinted(address minter, uint256 value, uint256 tier);
+    event UkraineNFTMinted(
+        address minter,
+        address recip,
+        uint256 value,
+        uint256 tier
+    );
 
     constructor(uint256[] memory _priceTiers, address _to)
         ERC721("ATX <3 UKR", "<3UKR")
@@ -82,7 +87,13 @@ contract ATXDAOUkraineNFT is ERC721URIStorage, Ownable {
         payable(recip).transfer(msg.value);
         tierMap[_tokenId] = tier;
         valueMap[_tokenId] = msg.value;
-        emit UkraineNFTMinted(msg.sender, msg.value, tier);
+        recips[recip] += msg.value;
+        emit UkraineNFTMinted(msg.sender, recip, msg.value, tier);
+    }
+
+    function totalDonated(address recip) public view returns (uint256) {
+        require(isRecip(recip), "invalid recipient!");
+        return recips[recip] - 1;
     }
 
     function addRecip(address recip) public onlyOwner {
