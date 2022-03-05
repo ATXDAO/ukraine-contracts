@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.12;
 
 import "ds-test/test.sol";
 import "contracts/ATXDAOUkraineNFT.sol";
@@ -92,15 +92,6 @@ contract ATXDAOUkraineNFTTest is DSTest {
         nft.endMint();
         vm.expectRevert("minting not started!");
         nft.mint{value: .512 ether}(mainRecip);
-    }
-
-    function testGetTier() public {
-        vm.expectRevert("value smaller than lowest tier!");
-        nft.getTier(0.01 ether);
-        assertEq(nft.getTier(0.0512 ether), 0);
-        assertEq(nft.getTier(0.512 ether), 1);
-        assertEq(nft.getTier(5.12 ether), 2);
-        assertEq(nft.getTier(512 ether), 2);
     }
 
     function testAltRecips() public {

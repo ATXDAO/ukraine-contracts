@@ -1,4 +1,5 @@
 import { ATXDAOUkraineNFT } from '../typechain-types/ATXDAOUkraineNFT';
+import { ukraineAddress } from '../util/constants';
 import { getContractAddress } from '../util/contract-meta';
 import { dynamicGetGasPrice } from '../util/gas-now';
 import { task } from 'hardhat/config';
@@ -56,7 +57,7 @@ task<MintArgs>('mint', 'mint an nft')
         `  gasPrice:  ${ethers.utils.formatUnits(txGasPrice, 'gwei')} gwei\n`
       );
 
-      const tx = await contract.mint({
+      const tx = await contract.mint(ukraineAddress, {
         value: ethers.utils.parseEther(mintPrice),
         gasPrice: txGasPrice,
       });
