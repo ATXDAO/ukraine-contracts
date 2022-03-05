@@ -10,7 +10,7 @@
 */
 
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.12;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -59,7 +59,7 @@ contract ATXDAOUkraineNFT is ERC721URIStorage, Ownable {
         }
     }
 
-    function getTier(uint256 value) public view returns (uint256) {
+    function getTier(uint256 value) internal view returns (uint256) {
         require(value >= priceTiers[0], "value smaller than lowest tier!");
         uint256 tier = 0;
         for (uint256 i = 0; i < priceTiers.length; ++i) {

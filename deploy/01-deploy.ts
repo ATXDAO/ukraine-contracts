@@ -1,4 +1,5 @@
 import { FixedDeployFunction } from '../types';
+import { ukraineAddress } from '../util/constants';
 import { dynamicGetGasPrice } from '../util/gas-now';
 
 const contractName = 'ATXDAOUkraineNFT';
@@ -30,9 +31,6 @@ const deployFunc: FixedDeployFunction = async ({
     ethers.utils.parseEther('0.512'),
     ethers.utils.parseEther('5.12'),
   ];
-  const ukraineAddress = ethers.utils.getAddress(
-    '0x165CD37b4C644C2921454429E7F9358d18A45e14'
-  );
   const contract = await deployments.deploy('ATXDAOUkraineNFT', {
     args: [tiers, ukraineAddress],
     libraries: {},

@@ -28,7 +28,7 @@ const privateKeys = PRIVATE_KEY ? [`0x${PRIVATE_KEY}`] : undefined;
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: '0.8.9',
+    version: '0.8.12',
     settings: {
       optimizer: {
         enabled: true,
