@@ -26,18 +26,19 @@ contract ATXDAOUkraineNFT is ERC721URIStorage, Ownable {
     uint256[] public priceTiers;
 
     string private baseURI;
-    address payable public to;
 
     mapping(uint256 => uint256) public tierMap;
     mapping(uint256 => uint256) public valueMap;
 
-    event UkraineNFTMinted(address recip, uint256 value, uint256 tier);
+    mapping(address => uint256) public recips;
+
+    event UkraineNFTMinted(address minter, uint256 value, uint256 tier);
 
     constructor(uint256[] memory _priceTiers, address _to)
-        ERC721("ATX <3 UKR", "ATX <3 UKR")
+        ERC721("ATX <3 UKR", "<3UKR")
     {
         setTiers(_priceTiers);
-        to = payable(_to);
+        addRecip(_to);
     }
 
     function setTiers(uint256[] memory _priceTiers) public onlyOwner {
@@ -66,8 +67,9 @@ contract ATXDAOUkraineNFT is ERC721URIStorage, Ownable {
     }
 
     // Normal mint
-    function mint() external payable {
+    function mint(address recip) external payable {
         require(isMintable == true, "minting not started!");
+        require(isRecip(recip), "recipient not whitelisted!");
         // returns a tier or throws an error if value too small
         uint256 tier = getTier(msg.value);
 
@@ -77,10 +79,18 @@ contract ATXDAOUkraineNFT is ERC721URIStorage, Ownable {
             _tokenId,
             string(abi.encodePacked(baseURI, tier.toString(), ".json"))
         );
-        to.transfer(msg.value);
+        payable(recip).transfer(msg.value);
         tierMap[_tokenId] = tier;
         valueMap[_tokenId] = msg.value;
         emit UkraineNFTMinted(msg.sender, msg.value, tier);
+    }
+
+    function addRecip(address recip) public onlyOwner {
+        recips[recip] = 1;
+    }
+
+    function isRecip(address recip) public view returns (bool) {
+        return recips[recip] > 0;
     }
 
     function startMint(string memory tokenURI) public onlyOwner {
