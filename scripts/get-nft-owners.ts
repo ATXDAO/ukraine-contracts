@@ -1,6 +1,5 @@
 import { ATXDAOUkraineNFT } from '../typechain-types/ATXDAOUkraineNFT';
 import { getContractAddress } from '../util/contract-meta';
-import { BigNumber } from 'ethers';
 import { task } from 'hardhat/config';
 
 task(
