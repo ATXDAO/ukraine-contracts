@@ -9,7 +9,6 @@ interface StartMintArgs {
   contractAddress?: string;
   gasPrice?: string;
   tokenUri: string;
-  mintPrice: string;
 }
 
 task<StartMintArgs>('start-mint', 'enable nft minting')
@@ -18,29 +17,19 @@ task<StartMintArgs>('start-mint', 'enable nft minting')
     'gasPrice',
     'gas price in wei to deploy with (uses provider.getGasPrice() otherwise)'
   )
-  .addParam('root', 'merkle root')
   .addParam('tokenUri', 'base token uri (should end with "/"')
   .setAction(
     async (
-      { contractAddress, gasPrice, mintPrice, tokenUri }: StartMintArgs,
+      { contractAddress, gasPrice, tokenUri }: StartMintArgs,
       { ethers, network }
     ) => {
-      const { isAddress, parseEther, formatEther } = ethers.utils;
+      const { isAddress } = ethers.utils;
       if (network.name === 'mainnet') {
         ethers.providers.BaseProvider.prototype.getGasPrice =
           dynamicGetGasPrice('fast');
       }
 
       assertValidTokenUri(tokenUri, /* dynamic */ true);
-
-      const parsedPrice = parseEther(mintPrice);
-
-      if (parsedPrice < parseEther('0.01')) {
-        console.error(
-          `mint-price (${formatEther(parsedPrice)} eth) less than 0.01 eth!`
-        );
-        process.exit(1);
-      }
 
       // prob need to adds spoofiny
       const signer = await ethers.provider.getSigner();
@@ -63,8 +52,6 @@ task<StartMintArgs>('start-mint', 'enable nft minting')
       )) as ATXDAOUkraineNFT;
 
       console.log('   running:  ATXDAONFT_V2.startMint()');
-      console.log(`     price:  ${formatEther(parsedPrice)} eth`);
-      console.log(`             ${parsedPrice} wei`);
       console.log(`  tokenUri:  ${tokenUri}`);
       console.log(`  contract:  ${parsedContractAddress}`);
       console.log(`   network:  ${network.name}`);

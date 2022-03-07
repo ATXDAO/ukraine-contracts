@@ -4,6 +4,7 @@ import '@nomiclabs/hardhat-waffle';
 import '@typechain/hardhat';
 import dotenv from 'dotenv';
 import fs from 'fs';
+import 'hardhat-abi-exporter';
 import 'hardhat-deploy';
 import { HardhatUserConfig } from 'hardhat/config';
 
