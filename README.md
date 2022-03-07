@@ -16,8 +16,8 @@
 ### Deployed Contract
 
 - mainnet: [TBD](https://etherscan.io/address/TBD)
-- ropsten: [TBD](https://ropsten.etherscan.io/address/TBD)
-- rinkeby: [TBD](https://rinkeby.etherscan.io/address/TBD)
+- ropsten: [0xa18C3780baCc84ad7585e31EeBCF998631B643cd](https://ropsten.etherscan.io/address/0xa18C3780baCc84ad7585e31EeBCF998631B643cd)
+- rinkeby: [0x99390BE7cf40225ECEB7167CA9E3746eCf6D7e6e](https://rinkeby.etherscan.io/address/0x99390BE7cf40225ECEB7167CA9E3746eCf6D7e6e)
 
 ## Setup
 
@@ -53,7 +53,7 @@ Done in 1.20s.
 ### Verify Contract
 
 ```zsh
-❯ hh verify --contract contracts/ATXDAOUkraineNFT.sol:ATXDAOUkraineNFT --network ropsten 0xe1e1561881aba2cbb4d29fa4e846c71cbd8073e4
+❯ hh verify --contract contracts/ATXDAOUkraineNFT.sol:ATXDAOUkraineNFT --network ropsten --constructor-args constructor-args.js 0xa18C3780baCc84ad7585e31EeBCF998631B643cd
 Nothing to compile
 No need to generate any newer typings.
 Compiling 1 file with 0.8.9
