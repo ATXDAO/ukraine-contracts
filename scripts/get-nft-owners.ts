@@ -4,36 +4,27 @@ import { task } from 'hardhat/config';
 
 interface GetNftOwnersArgs {
   contract: ContractName;
-  start: number;
-  end: number;
 }
 
 task('get-nft-owners', 'gets a list of nft owners, ordered by token id')
   .addParam<ContractName>('contract', 'contract name (e.g. ATXDAOUkraineNFT)')
-  .addOptionalParam<number>('start', 'token id to start')
-  .addOptionalParam<number>('end', 'token id to end (inclusive)')
-  .setAction(
-    async (
-      { contract, start = 3, end = 999999 }: GetNftOwnersArgs,
-      { ethers, network }
-    ) => {
-      const contractAddress = getContractAddress(contract, network.name);
-      const nft = (await ethers.getContractAt(
-        contract,
-        contractAddress
-      )) as ATXDAOUkraineNFT;
-      const nftData: { owner: string; uri: string }[] = [];
-      for (let id = start; id <= end; id += 1) {
-        try {
-          const owner = await nft.ownerOf(id);
-          const uri = await nft.tokenURI(id);
-          nftData.push({ owner, uri });
-        } catch {
-          break;
-        }
-      }
+  .setAction(async ({ contract }: GetNftOwnersArgs, { ethers, network }) => {
+    const contractAddress = getContractAddress(contract, network.name);
+    const nft = (await ethers.getContractAt(
+      contract,
+      contractAddress
+    )) as ATXDAOUkraineNFT;
 
-      console.error(`${nftData.length} found!`);
-      console.log(JSON.stringify(nftData, null, 4));
-    }
-  );
+    const nftData: { owner: string; tier: number; value: number }[] = [];
+    const [owners, tiers, values] = await nft.getOwners();
+    owners.forEach((owner, i) =>
+      nftData.push({
+        owner,
+        tier: tiers[i].toNumber(),
+        value: values[i].div(1e18).toNumber(),
+      })
+    );
+
+    console.error(`${nftData.length} found!`);
+    console.log(JSON.stringify(nftData, null, 4));
+  });

@@ -4,8 +4,14 @@
 
 ### IPFS Metadata
 
-- metadata: `ipfs://TBD`
-- image: `ipfs://TBD`
+- json
+  - 0.0512 eth tier `ipfs://QmcbbDUUTAJoHuPJRXbrRLiSSMBR8vgu4cNaYxAxNsmm3Q/0.json`
+  - 0.512 eth tier `ipfs://QmcbbDUUTAJoHuPJRXbrRLiSSMBR8vgu4cNaYxAxNsmm3Q/1.json`
+  - 5.12 eth tier `ipfs://QmcbbDUUTAJoHuPJRXbrRLiSSMBR8vgu4cNaYxAxNsmm3Q/2.json`
+- image
+  - 0.0512 eth tier `ipfs://QmW7V2ULUgqxc1Tkba7PXMiXfnW7UYjHHmvQ9Db67oDT8j/0.png`
+  - 0.512 eth tier `ipfs://QmW7V2ULUgqxc1Tkba7PXMiXfnW7UYjHHmvQ9Db67oDT8j/1.png`
+  - 5.12 eth tier `ipfs://QmW7V2ULUgqxc1Tkba7PXMiXfnW7UYjHHmvQ9Db67oDT8j/2.png`
 
 ### Deployed Contract
 
